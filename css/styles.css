@@ -53,10 +53,11 @@ nav header h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: .5s ease-in-out;
 }
 
 nav ul {
-  display: flex;
+  display: none;
   position: absolute;
   flex-direction: column;
   top: 12.5vh;
