@@ -76,34 +76,35 @@ let config = {
   },
   gameConfig: {
     "winScore": 3,
+    "startingElixir": 500,
     "powerups": [
       {
         "name": "speed boost",
         "icon": "./assets/powerups/speed-boost-powerup.svg",
         "description": "Temporarily increase the speed of the players paddle that uses this powerup",
-        "elexirPrice": "1000",
-        "timeout": 10,
+        "elixirPrice": "1000",
+        "timeout": 10
       },
       {
         "name": "paddle enlargement",
         "icon": "./assets/powerups/paddle-enlargement-powerup.svg",
         "description": "Temporarily increase the size of the players paddle that uses this powerup",
-        "elexirPrice": "1500",
-        "timeout": 15,
+        "elixirPrice": "1500",
+        "timeout": 15
       },
       {
         "name": "speed up ball",
         "icon": "./assets/powerups/speed-up-ball-powerup.svg",
         "description": "Temporarily increase the ball speed when going to the opposite player, making it more difficult for the other player.",
-        "elexirPrice": "2500",
-        "timeout": 15,
+        "elixirPrice": "2500",
+        "timeout": 15
       },
       {
         "name": "freeze player",
         "icon": "./assets/powerups/freeze-player-powerup.svg",
         "description": "Temporary slows down the opponent speed a ton.",
-        "elexirPrice": "5000",
-        "timeout": 2,
+        "elixirPrice": "5000",
+        "timeout": 2
       },
     ]
   },
@@ -111,7 +112,7 @@ let config = {
     "ball": {
       "circleRadius": 20,
       "fill": "#fff",
-      "type": "player1Paddle",
+      "startingPosition": [window.innerWidth / 2, window.innerHeight / 2],
     },
     "paddle": {
       "width": 30,
@@ -125,7 +126,7 @@ let config = {
             "powerups": ["1", "2", "3", "4"]
           },
           "paddleColor": "blue",
-          "currentPosition": [],
+          "startingPosition": [15, (window.innerHeight / 2) - 200] // Replaced the reference to config
         },
         "player2": {
           "playerName": "Player 2",
@@ -135,7 +136,7 @@ let config = {
             "powerups": ["left", "right", ["left, up"], ["right, up"]]
           },
           "paddleColor": "red",
-          "currentPosition": []
+          "startingPosition": [window.innerWidth - 15, (window.innerHeight / 2) - 200] // Replaced the reference to config
         },
       }
     }
@@ -147,14 +148,16 @@ let allGames = []
 
 let gameState = {
   "ball": {
-    "position": [window,innnerWidth / 2, window.innerHeight / 2]
+    "position": config.mainElements.ball.startingPosition,
   },
   "player1": {
-    "position": [15, (window.innerHeight / 2) - (config.mainElements.paddle.height / 2)],
+    "position": config.mainElements.paddle.players.player1.startingPosition,
+    "elixir": config.gameConfig.startingElixir,
     "activePowerups": [],
   },
   "player2": {
-    "position": [window.innerWidth - 15, (window.innerHeight / 2) - (config.mainElements.paddle.height / 2)],
+    "position": config.mainElements.paddle.players.player2.startingPosition,
+    "elixir": config.gameConfig.startingElixir,
     "activePowerups": [],
   },
   "score": {
@@ -165,7 +168,6 @@ let gameState = {
   },
 }
 
-
 const myGameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
@@ -175,29 +177,34 @@ const myGameArea = {
   },
   renderBall: function() {
     const ball = gameCanvas.getContext("2d");
-    const getBallInitialPosition = (circleRadius) => {
-      const x = window.innerWidth - circleRadius;
-      return {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-      }
-    }
-    const ballRadiusWidth = 20;
-    const { x, y } = getBallInitialPosition(ballRadiusWidth);
+    const ballRadiusWidth = config.mainElements.ball.circleRadius;
+    const ballFillColor = config.mainElements.ball.fill;
+
+    const [x, y] = gameState.ball.position;
+
     ball.beginPath();
     ball.arc(x, y, ballRadiusWidth, 0, 2 * Math.PI);
 
-    ball.fillStyle= "white";
+    ball.fillStyle = ballFillColor;
     ball.fill();
   },
   renderPaddles: function() {
+    const paddleWidth = config.mainElements.paddle.width;
+    const paddleHeight = config.mainElements.paddle.height;
+
+    const paddle1Config = config.mainElements.paddle.players.player1;
+    const paddle2Config = config.mainElements.paddle.players.player2;
+
+    const [p1PositionX, p1PositionY] = gameState.player1.position; 
+    const [p2PositionX, p2PositionY] = gameState.player2.position; 
+
     const player1Paddle = gameCanvas.getContext("2d");
-    player1Paddle.fillStyle = "blue";
-    player1Paddle.fillRect(0, 0, 30, 400);
+    player1Paddle.fillStyle = paddle1Config.paddleColor;
+    player1Paddle.fillRect(p1PositionX, p1PositionY, paddleWidth, paddleHeight);
 
     const player2Paddle = gameCanvas.getContext("2d");
-    player2Paddle.fillStyle = "red";
-    player2Paddle.fillRect(100, 0, 30, 400);
+    player2Paddle.fillStyle = paddle2Config.paddleColor;
+    player2Paddle.fillRect(p2PositionX, p2PositionY, paddleWidth, paddleHeight);
   }
 }
 
