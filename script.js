@@ -8,15 +8,31 @@ let config = {
     "powerups": [
       {
         "name": "speed boost",
+        "icon": "./assets/powerups/speed-boost-powerup.svg",
         "description": "Temporarily increase the speed of the players paddle that uses this powerup",
         "elexirPrice": "1000",
         "timeout": 10,
       },
       {
-        "name": "",
-        "description": "Temporarily increase the speed of the players paddle that uses this powerup",
-        "elexirPrice": "1000",
-        "timeout": 10,
+        "name": "paddle enlargement",
+        "icon": "./assets/powerups/paddle-enlargement-powerup.svg",
+        "description": "Temporarily increase the size of the players paddle that uses this powerup",
+        "elexirPrice": "1500",
+        "timeout": 15,
+      },
+      {
+        "name": "speed up ball",
+        "icon": "./assets/powerups/speed-up-ball-powerup.svg",
+        "description": "Temporarily increase the ball speed when going to the opposite player, making it more difficult for the other player.",
+        "elexirPrice": "2500",
+        "timeout": 15,
+      },
+      {
+        "name": "freeze player",
+        "icon": "./assets/powerups/freeze-player-powerup.svg",
+        "description": "Temporary slows down the opponent speed a ton.",
+        "elexirPrice": "5000",
+        "timeout": 2,
       },
     ]
   },
