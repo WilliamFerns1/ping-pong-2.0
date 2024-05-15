@@ -1,7 +1,3 @@
-const startGame = () => {
-  myGameArea.start();
-}
-
 let config = {
   themes: {
     "activeTheme": "default",
@@ -171,9 +167,9 @@ let gameState = {
 const myGameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    renderElements();
+    const gameCanvas = document.querySelector("#game-canvas");
+    gameCanvas.setAttribute("width", window.innerWidth);
+    gameCanvas.setAttribute("height", window.innerHeight);
   },
   renderBall: function() {
     const ball = gameCanvas.getContext("2d");
@@ -208,8 +204,9 @@ const myGameArea = {
   }
 }
 
-const setCanvasSize = () => {
-  gameCanvas.setAttribute("width", window.innerWidth);
-  gameCanvas.setAttribute("height", window.innerHeight);
+const startGame = () => {
+  myGameArea.start();
 }
 
+
+startGame();
